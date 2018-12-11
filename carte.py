@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 """Ce module contient la classe Carte."""
 from labyrinthe import *
 import pickle
@@ -26,7 +27,7 @@ def creer_labyrinthe_depuis_chaine(chaine):
             places_libres += [(ii, jj) for jj, char in enumerate(grille[ii]) if char == " "]
 
     """ renvoie un objet de type labyrinthe"""
-    return Labyrinthe(robot, obstacles, portes, sorties, grille,places_libres)
+    return Labyrinthe(robot, obstacles, portes, sorties, grille, places_libres, messages=True)
 
 class Carte:
     """Objet de transition entre un fichier et un labyrinthe."""

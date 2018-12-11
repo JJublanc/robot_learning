@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """Ce module contient la classe Labyrinthe."""
+
 import pickle
 import os
 
@@ -8,8 +9,8 @@ import os
 class Labyrinthe:
     """Classe représentant un labyrinthe."""
 
-    def __init__(self, robot, obstacles, portes, sorties, grille, places_libres):
-        self.elements_labyrinthe = ["X", "O", ".", "U", "."]
+    def __init__(self, robot, obstacles, portes, sorties, grille, places_libres, messages):
+        self.elements_labyrinthe = ["X", "O", " ", "U", "."]
         self.directions_autorisees = ["n", "s", "e", "o"]
         self.commande_fin_partie = ["q"]
         self.robot = robot
@@ -18,7 +19,6 @@ class Labyrinthe:
         self.sorties = sorties
         self.places_libres = places_libres
         self.grille = grille
-        self.nombre_points = 0
         self.message_erreur_instruction = "\n\nIl faut donner une instruction valide du type xy, avec x " \
                                           "une direction parmi {0} et y un entier indiquant le " \
                                           "nombre de pas à effectuer dans cette direction." \
@@ -32,6 +32,8 @@ class Labyrinthe:
                                      "\nVous avez gagné" \
                                      "\n***************"
         self.message_fin_partie = "\nLa partie est finie. Vous pourrez la reprendre plus tard.\n"
+        self.nombre_points = 0
+        self.messages = messages  # booléen permettant de contrôler si on affiche des messages ou non
 
     def executer_instruction(self, instruction):
         arreter = False
@@ -59,9 +61,11 @@ class Labyrinthe:
                     nombre_pas = int(instruction[1:len(instruction)])
                 arreter = self.effectuer_mouvement(direction, nombre_pas)
         except ValueError:
-            print(self.message_erreur_instruction)
+            if self.messages:
+                print(self.message_erreur_instruction)
         except AssertionError:
-            print(self.message_erreur_instruction)
+            if self.messages:
+                print(self.message_erreur_instruction)
 
         """On renvoit True si la partie prend fin"""
         return arreter
@@ -75,12 +79,12 @@ class Labyrinthe:
             colone_a_atteindre = self.robot[1]
 
         if direction == "s":
-            ligne_a_atteindre = min((self.robot[0] + nombre_pas), len(self.grille)-1)
+            ligne_a_atteindre = min((self.robot[0] + nombre_pas), len(self.grille) - 1)
             colone_a_atteindre = self.robot[1]
 
         if direction == "e":
             ligne_a_atteindre = self.robot[0]
-            colone_a_atteindre = min((self.robot[1] + nombre_pas), len(self.grille[self.robot[0]])-1)
+            colone_a_atteindre = min((self.robot[1] + nombre_pas), len(self.grille[self.robot[0]]) - 1)
 
         if direction == "o":
             ligne_a_atteindre = self.robot[0]
@@ -96,12 +100,12 @@ class Labyrinthe:
         if aucun_osbtacle_sur_parcours:
             self.changer_position(ligne_a_atteindre, colone_a_atteindre)
         else:
-            print(self.message_obstacles)
+            if self.messages:
+                print(self.message_obstacles)
 
         """Si n'y a pas d'obstacle et que la position finale est une sortie on finit la partie"""
         if aucun_osbtacle_sur_parcours & position_arrivee_sortie:
             robot_sorti = self.partie_gagnee()
-            self.nombre_points = 1
 
         """la méthode renvoie un booleen qui vaut True si on arrête la partie ou si on est sorti du labyrinthe."""
         return robot_sorti
@@ -131,6 +135,7 @@ class Labyrinthe:
     def changer_position(self, ligne_a_atteindre, colone_a_atteindre):
         """On efface le robot de la grille sans oublier de remettre le
         symbole de la porte s'il y en avait une à notre arrivée"""
+
         if (self.robot[0], self.robot[1]) in self.portes:
             self.grille[self.robot[0]][self.robot[1]] = "."
         else:
@@ -139,20 +144,23 @@ class Labyrinthe:
         """On change la position du robot"""
         self.robot = [ligne_a_atteindre, colone_a_atteindre]
 
-        """On positionne le robot sur la case à atteindre"""
+        """On modifie la grille en positionnant le robot sur la case à atteindre"""
         self.grille[self.robot[0]][self.robot[1]] = "X"
 
         """On enregistre la partie"""
         self.enregistrer_partie()
 
     def fin_de_partie(self):
-        print(self.message_fin_partie)
+        if self.messages:
+            print(self.message_fin_partie)
         self.enregistrer_partie()
         return True
 
     def partie_gagnee(self):
-        print(self.message_partie_gagnee)
+        if self.messages:
+            print(self.message_partie_gagnee)
         os.remove("partie_en_cours")
+        self.nombre_points = 1
         return True
 
     def enregistrer_partie(self):
