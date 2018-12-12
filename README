@@ -1,0 +1,22 @@
+Le projet a pour objectif de réaliser des tests de reinforcement learning sur un jeu basic.
+Voici la liste des fichiers et ce qu'il y a dedans :
+
+Pour l'utilisateur
+* play_robot : script à lancer pour essayer le jeu ; le joueur c'est l'utilisateur.
+* entrainement_model : script permettant d'entraîner un agent virtuel à jouer au jeu du robot.
+* display_resultat : script pour visualiser les résultats sous forme de graphiques (à finaliser).
+* interface_graphique : [PAS OPÉRATIONNEL].
+
+Pour le fonctionnement des scripts principaux :
+* actions : définition des fonctions permettant de jouer.
+* carte : définition de la classe Cartes.
+* labyrinthe : définition de la classe Labyrinthe.
+* partie_en_cours : sauvegarde de la partie en cours si elle n'est pas finie.
+* Q_learning : algorithme d'apprentissage.
+* tests : premiers tests [À compléter].
+
+Dossiers :
+* résultats : dossier dans lequel sont enregistrés les performances des modèles et leurs caractéristiques.
+* cartes : deux types de cartes differentes sont enregistrées pour le labyrinthe.
+en pratique on n'utilise que la carte facile pour le moment.
+* cartes_test : cartes utilisées pour réaliser des tests.
