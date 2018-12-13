@@ -10,3 +10,4 @@ for ii in [2, 3]:
                           resultats['epsilon'],
                           resultats['nb_iter']))
 plt.legend(legend, loc='upper right')
+

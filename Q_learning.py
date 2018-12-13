@@ -10,6 +10,7 @@ import time
 
 
 def Q_learning_algo(q=pd.DataFrame(columns=["s", "a", "q"]),
+                    nb_iter_prec=0,
                     lamb=0.9, alpha=0.2, epsilon=0.1, nb_iter=1,
                     verbosity=False):
     """
@@ -19,13 +20,14 @@ def Q_learning_algo(q=pd.DataFrame(columns=["s", "a", "q"]),
     :param epsilon: paramètre epsilon pour la epsilon-greedy policy
     :param nb_iter: nombre d'itérations
     :param verbosity: affichage de messages True/False
+    :param nb_iter_prec : nombre d'itérations précédentes si le modèle est pré-entrainé
     :return:
     """
     type_algo = "Q learning"
     try:
         Q = q
-        assert isinstance(Q, pd.DataFrame)
-        assert [q.columns] == ["s", "a", "q"]
+        assert isinstance(Q, pd.core.frame.DataFrame)
+        assert list(q.columns) == ["s", "a", "q"]
     except AssertionError:
         print("Q doit être un dataFrame avec trois colonnes nommées s, a et q")
         Q = pd.DataFrame(columns=["s", "a", "q"])
@@ -84,7 +86,7 @@ def Q_learning_algo(q=pd.DataFrame(columns=["s", "a", "q"]),
             """
 
             if sum(Q[(Q.s == s)].loc[:, 'a'].isin([a])) > 0:
-                Q.loc[(Q.s == s) & (Q.a == a), 'q'] = ((1-alpha) * Q[(Q.s == s) & (Q.a == a)].q
+                Q.loc[(Q.s == s) & (Q.a == a), 'q'] = ((1 - alpha) * Q[(Q.s == s) & (Q.a == a)].q
                                                        + alpha * target)
                 if verbosity:
                     print("mise à jour {}".format(Q.loc[(Q.s == s) & (Q.a == a), 'q']))
@@ -95,6 +97,7 @@ def Q_learning_algo(q=pd.DataFrame(columns=["s", "a", "q"]),
                 Q = Q.append(df)
             nbnb_essais += 1
         nombre_mvt.append(nbnb_essais)
+        nb_iter = nb_iter + nb_iter_prec
     return nombre_mvt, Q, lamb, alpha, epsilon, nb_iter, type_algo
 
 
@@ -129,7 +132,6 @@ def action_choisie(epsilon, s, Q):
     if (s in list(Q.s)) & (rand == 1):
         if max(Q[Q.s == s].q) > 0:
             max_q = max(Q[Q.s == s].q)
-            print(max_q)
             a = random.choice(Q[(Q.s == s) & (Q.q == max_q)].a)
         else:
             a = random.choice(['n', 's', 'e', 'o'])
@@ -138,25 +140,29 @@ def action_choisie(epsilon, s, Q):
     return a
 
 
-def recuperation_resultats(q=pd.DataFrame(columns=["s", "a", "q"]),
+def recuperation_resultats(q=pd.DataFrame(columns=["s", "a", "q"]), nb_iter_prec=0,
                            lamb=0.9, alpha=0.2, epsilon=0.1, nb_iter=1):
-    nombre_mvt, Q_sortie, lamb, alpha, epsilon, nb_iter, type_algo = Q_learning_algo(q, lamb, alpha, epsilon, nb_iter)
-    # pd.Series(resultats).plot()
+    # on lance l'apprentissage
+    nombre_mvt, Q_sortie, lamb, alpha, epsilon, nb_iter, type_algo = Q_learning_algo(q, nb_iter_prec, lamb, alpha,
+                                                                                     epsilon, nb_iter)
+
+    # on récupère les résultats dans un dictionnaire
     Resultats = {'nombre_mvt': nombre_mvt,
                  'paramètres_apprentissage': Q_sortie,
                  'lamb': lamb,
                  'alpha': alpha,
                  'epsilon': epsilon,
                  'nb_iter': nb_iter,
-                 'type_algo' : type_algo}
+                 'type_algo': type_algo}
     return Resultats
 
 
-def enregistrement_resultats(Resultats):
+def enregistrement_resultats(Resultats, nom_fichier=""):
     """
     On récupère le bon numéro pour l'enregistrement du fichier i.e le max utilisé +1
     Puis on enregistre les résultats pickelisés
-    :param Resultats:
+    :param nom_fichier: nom du fichier de destination
+    :param Resultats: résultats d'entrainement
     :return: rien mais enregistre les Resultats dans un fichier
     """
     resultats_numeros = []
@@ -168,7 +174,8 @@ def enregistrement_resultats(Resultats):
         numero_max = 0
 
     ## On enregistre les résultat dans un fichier dans le
-    nom_fichier = "resultats\\resultats_{}".format(numero_max + 1)
+    if nom_fichier == "":
+        nom_fichier = "resultats\\resultats_{}".format(numero_max + 1)
     with open(nom_fichier, "wb") as resultats_fichier:
         mon_pickler = pickle.Pickler(resultats_fichier)
         mon_pickler.dump(Resultats)
