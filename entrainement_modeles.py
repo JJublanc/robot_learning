@@ -1,7 +1,7 @@
 from Q_learning import *
 
 
-def entrainement_modeles(alphas=[0.5, 0.8], epsilons=[0.3, 0.1], nb_iter=1):
+def entrainement_modeles(alphas=[0.2, 0.5], epsilons=[0.3, 0.1], nb_iter=1):
     """
     entraine les modèles avec les combinaisons de paramètres enregistrées
     recupère les résultats de tous les modèles

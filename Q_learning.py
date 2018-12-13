@@ -10,14 +10,18 @@ import time
 
 
 def Q_learning_algo(q=pd.DataFrame(columns=["s", "a", "q"]),
-                    lamb=0.9, alpha=0.8, epsilon=0.1, nb_iter=1,
-                    verbosity=True):
+                    lamb=0.9, alpha=0.2, epsilon=0.1, nb_iter=1,
+                    verbosity=False):
     """
-    q = paramètres d'apprentissages, par défaut on repart de 0, mais on peut repartir d'un ancien modèle
-    lamb = 0.9  # facteur de discount
-    alpha = 0.8  # taux d'apprentissage
-    epsilon = 0.1  # paramètre epsilon pour la epsilon-greedy policy
+    :param q: paramètres d'apprentissages, par défaut on repart de 0, mais on peut repartir d'un ancien modèle
+    :param lamb: facteur de discount
+    :param alpha: taux d'apprentissage
+    :param epsilon: paramètre epsilon pour la epsilon-greedy policy
+    :param nb_iter: nombre d'itérations
+    :param verbosity: affichage de messages True/False
+    :return:
     """
+    type_algo = "Q learning"
     try:
         Q = q
         assert isinstance(Q, pd.DataFrame)
@@ -80,8 +84,8 @@ def Q_learning_algo(q=pd.DataFrame(columns=["s", "a", "q"]),
             """
 
             if sum(Q[(Q.s == s)].loc[:, 'a'].isin([a])) > 0:
-                Q.loc[(Q.s == s) & (Q.a == a), 'q'] = (alpha * Q[(Q.s == s) & (Q.a == a)].q
-                                                       + (1 - alpha) * target)
+                Q.loc[(Q.s == s) & (Q.a == a), 'q'] = ((1-alpha) * Q[(Q.s == s) & (Q.a == a)].q
+                                                       + alpha * target)
                 if verbosity:
                     print("mise à jour {}".format(Q.loc[(Q.s == s) & (Q.a == a), 'q']))
             else:
@@ -91,7 +95,7 @@ def Q_learning_algo(q=pd.DataFrame(columns=["s", "a", "q"]),
                 Q = Q.append(df)
             nbnb_essais += 1
         nombre_mvt.append(nbnb_essais)
-    return nombre_mvt, Q, lamb, alpha, epsilon, nb_iter
+    return nombre_mvt, Q, lamb, alpha, epsilon, nb_iter, type_algo
 
 
 def def_target(s_prim, Q, lamb, r):
@@ -135,15 +139,16 @@ def action_choisie(epsilon, s, Q):
 
 
 def recuperation_resultats(q=pd.DataFrame(columns=["s", "a", "q"]),
-                           lamb=0.9, alpha=0.8, epsilon=0.1, nb_iter=1):
-    nombre_mvt, Q_sortie, lamb, alpha, epsilon, nb_iter = Q_learning_algo(q, lamb, alpha, epsilon, nb_iter)
+                           lamb=0.9, alpha=0.2, epsilon=0.1, nb_iter=1):
+    nombre_mvt, Q_sortie, lamb, alpha, epsilon, nb_iter, type_algo = Q_learning_algo(q, lamb, alpha, epsilon, nb_iter)
     # pd.Series(resultats).plot()
     Resultats = {'nombre_mvt': nombre_mvt,
                  'paramètres_apprentissage': Q_sortie,
                  'lamb': lamb,
                  'alpha': alpha,
                  'epsilon': epsilon,
-                 'nb_iter': nb_iter}
+                 'nb_iter': nb_iter,
+                 'type_algo' : type_algo}
     return Resultats
 
 
