@@ -3,8 +3,10 @@ Voici la liste des fichiers et ce qu'il y a dedans :
 
 Pour l'utilisateur
 * play_robot : script à lancer pour essayer le jeu ; le joueur c'est l'utilisateur.
-* entrainement_model : script permettant d'entraîner un agent virtuel à jouer au jeu du robot.
-* display_resultat : script pour visualiser les résultats sous forme de graphiques (à finaliser).
+* resultats_display : Affichage des résultats sous forme de graphiques.
+* resultats_enregistrement : Enregistrement des résultats dans le dossier resultats du projet
+* resultats_modeles_entrainement : entraînement par d'agents virtuels à jouer au jeu du robot.
+* resultats_modeles_re-entrainement : entrainement à partir de mdèle pré-entrainés
 * interface_graphique : [PAS OPÉRATIONNEL].
 
 Pour le fonctionnement des scripts principaux :
@@ -18,5 +20,5 @@ Pour le fonctionnement des scripts principaux :
 Dossiers :
 * résultats : dossier dans lequel sont enregistrés les performances des modèles et leurs caractéristiques.
 * cartes : deux types de cartes differentes sont enregistrées pour le labyrinthe.
-en pratique on n'utilise que la carte facile pour le moment.
+  [NB : en pratique on n'utilise que la carte facile pour le moment.]
 * cartes_test : cartes utilisées pour réaliser des tests.
