@@ -5,20 +5,20 @@ Pour l'utilisateur
 * play_robot : script à lancer pour essayer le jeu ; le joueur c'est l'utilisateur.
 * resultats_display : Affichage des résultats sous forme de graphiques.
 * resultats_enregistrement : Enregistrement des résultats dans le dossier resultats du projet
-* resultats_modeles_entrainement : entraînement par d'agents virtuels à jouer au jeu du robot.
-* resultats_modeles_re-entrainement : entrainement à partir de mdèle pré-entrainés
+* resultats_modeles_entrainement : Entraînement d'agents virtuels à jouer au jeu du robot.
+* resultats_modeles_re-entrainement : entrainement à partir de mdèle pré-entrainés.
 * interface_graphique : [PAS OPÉRATIONNEL].
 
 Pour le fonctionnement des scripts principaux :
-* actions : définition des fonctions permettant de jouer.
-* carte : définition de la classe Cartes.
-* labyrinthe : définition de la classe Labyrinthe.
-* partie_en_cours : sauvegarde de la partie en cours si elle n'est pas finie.
-* Q_learning : algorithme d'apprentissage.
-* tests : premiers tests [À compléter].
+* actions : Définition des fonctions permettant de jouer.
+* carte : Définition de la classe Carte.
+* labyrinthe : Définition de la classe Labyrinthe.
+* partie_en_cours : Sauvegarde de la partie en cours si elle n'est pas finie.
+* Q_learning : Algorithme d'apprentissage.
+* tests : Premiers tests [À compléter].
 
 Dossiers :
-* résultats : dossier dans lequel sont enregistrés les performances des modèles et leurs caractéristiques.
-* cartes : deux types de cartes differentes sont enregistrées pour le labyrinthe.
+* resultats : Dossier dans lequel sont enregistrés les performances des modèles et leurs caractéristiques.
+* cartes : Deux types de cartes différentes sont enregistrées pour le labyrinthe.
   [NB : en pratique on n'utilise que la carte facile pour le moment.]
-* cartes_test : cartes utilisées pour réaliser des tests.
+* cartes_test : Cartes utilisées pour réaliser des tests.
