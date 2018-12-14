@@ -17,9 +17,10 @@ def entrainement_modeles(alphas=[0.2, 0.5], epsilons=[0.3, 0.1], nb_iter=1):
 
 
 # On entraine un premier jeu de données
-entrainement_modeles(nb_iter=300)
+entrainement_modeles(nb_iter=3)
 
 # On ré-entraine un modèle
+# Et on l'enregistre au même endroit
 nb_fichier = 0
 ensemble_des_resultats = recuperation_resultats_enregistres()
 q = ensemble_des_resultats[nb_fichier]['paramètres_apprentissage']

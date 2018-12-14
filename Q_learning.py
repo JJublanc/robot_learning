@@ -133,6 +133,7 @@ def action_choisie(epsilon, s, Q):
         if max(Q[Q.s == s].q) > 0:
             max_q = max(Q[Q.s == s].q)
             a = random.choice(Q[(Q.s == s) & (Q.q == max_q)].a)
+            #TODO régler le probleme sur la ligne ci-dessous
         else:
             a = random.choice(['n', 's', 'e', 'o'])
     else:

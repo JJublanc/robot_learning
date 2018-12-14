@@ -1,0 +1,26 @@
+Pour les entrainement longs (plus de 300 itérations) pour plusieurs paramètres on n'a qu'un seul résultat et le message d'erreur dsuivant
+
+Traceback (most recent call last):
+  File "C:\Users\johan.jublanc\AppData\Local\Continuum\anaconda3\lib\site-packages\IPython\core\interactiveshell.py", line 2963, in run_code
+    exec(code_obj, self.user_global_ns, self.user_ns)
+  File "<ipython-input-3-6496938b4249>", line 17, in <module>
+    entrainement_modeles(nb_iter=300)
+  File "<ipython-input-3-6496938b4249>", line 13, in entrainement_modeles
+    enregistrement_resultats(recuperation_resultats(nb_iter=nb_iter, alpha=alpha, epsilon=epsilon))
+  File "C:\Users\johan.jublanc\PycharmProjects\robot_learning\Q_learning.py", line 147, in recuperation_resultats
+    epsilon, nb_iter)
+  File "C:\Users\johan.jublanc\PycharmProjects\robot_learning\Q_learning.py", line 62, in Q_learning_algo
+    a = action_choisie(epsilon, s, Q)
+  File "C:\Users\johan.jublanc\PycharmProjects\robot_learning\Q_learning.py", line 135, in action_choisie
+    a = random.choice(Q[(Q.s == s) & (Q.q == max_q)].a)
+  File "C:\Users\johan.jublanc\AppData\Local\Continuum\anaconda3\lib\random.py", line 259, in choice
+    return seq[i]
+  File "C:\Users\johan.jublanc\AppData\Roaming\Python\Python36\site-packages\pandas\core\series.py", line 767, in __getitem__
+    result = self.index.get_value(self, key)
+  File "C:\Users\johan.jublanc\AppData\Roaming\Python\Python36\site-packages\pandas\core\indexes\base.py", line 3118, in get_value
+    tz=getattr(series.dtype, 'tz', None))
+  File "pandas\_libs\index.pyx", line 106, in pandas._libs.index.IndexEngine.get_value
+  File "pandas\_libs\index.pyx", line 114, in pandas._libs.index.IndexEngine.get_value
+  File "pandas\_libs\index.pyx", line 157, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas\_libs\index.pyx", line 177, in pandas._libs.index.IndexEngine._get_loc_duplicates
+KeyError: 1
