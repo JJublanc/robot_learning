@@ -2,7 +2,7 @@ Le projet a pour objectif de réaliser des tests de reinforcement learning sur u
 Voici la liste des fichiers et ce qu'il y a dedans :
 
 Pour l'utilisateur
-* play_robot : script à lancer pour essayer le jeu ; le joueur c'est l'utilisateur.
+* play_robot : Script à lancer pour essayer le jeu ; le joueur c'est l'utilisateur.
 * resultats_display : Affichage des résultats sous forme de graphiques.
 * resultats_enregistrement : Enregistrement des résultats dans le dossier resultats du projet
 * resultats_modeles_entrainement : Entraînement d'agents virtuels à jouer au jeu du robot.
