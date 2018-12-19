@@ -40,7 +40,7 @@ def enregistrement_resultats(Resultats, mon_fichier=""):
             mon_pickler = pickle.Pickler(resultats_fichier)
             mon_pickler.dump(Resultats)
     else:
-        chemin_fichier = "resultats\\{}".format(nom_fichier)
+        chemin_fichier = "resultats\\{}".format(mon_fichier)
         with open(chemin_fichier, "wb") as resultats_fichier:
             mon_pickler = pickle.Pickler(resultats_fichier)
             mon_pickler.dump(Resultats)

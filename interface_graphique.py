@@ -1,4 +1,5 @@
 # -*- coding: utf8 -*-
+import tkinter
 from tkinter import *
 import random
 from time import sleep
@@ -8,8 +9,8 @@ import numpy as np
 
 
 def exploiting_robot(q=pd.DataFrame(columns=["s", "a", "q"]),
-                  labyrinthe=chargement_des_cartes()[0].labyrinthe,
-                  epsilon=1):
+                     labyrinthe=chargement_des_cartes()[0].labyrinthe,
+                     epsilon=1):
     """
     Initialisation des paramètres
     """
@@ -32,11 +33,18 @@ def exploiting_robot(q=pd.DataFrame(columns=["s", "a", "q"]),
     nb_essais = 1
 
     # on initialise la sortie graphique
-    fenetre = Tk()
-    var = StringVar()
-    var.set(labyrinthe.grille)
-    labyrinthe_sortie = Label(fenetre, textvariable=var, anchor="e", width=20)
-    labyrinthe_sortie.pack()
+    host = []
+    larg = len(labyrinthe.grille[0])
+    root = tkinter.Tk()
+    var = labyrinthe.grille
+    for r in range(len(labyrinthe.grille)):
+        for c in range(len(labyrinthe.grille[r])):
+            host.append("")
+            host[r * larg + c] = tkinter.Label(root, text=var[r][c], borderwidth=1)
+            host[r * larg + c].grid(row=r, column=c)
+            host[r * larg + c].pack
+
+
     s = '\n'.join(["".join(line) for line in labyrinthe.grille])
 
     # on joue
@@ -63,8 +71,9 @@ def exploiting_robot(q=pd.DataFrame(columns=["s", "a", "q"]),
 
         # on effectue l'action choisie, ici on bouge (on tente de bouger) le robot
         fin_partie = labyrinthe.executer_instruction(a)
-        var.set(s)
-        fenetre.update()
+        var.set(labyrinthe.grille)
+        # TODO Essayer for r c var[r]{c].set()
+        root.update()
         sleep(0.1)
 
         # TODO idem transformer en fonction
@@ -74,6 +83,5 @@ def exploiting_robot(q=pd.DataFrame(columns=["s", "a", "q"]),
         else:
             nb_essais += 1
 
+
 exploiting_robot()
-
-
