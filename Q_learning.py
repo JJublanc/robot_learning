@@ -132,9 +132,9 @@ def action_choisie(epsilon, s, Q):
     if (s in list(Q.s)) & (rand == 1):
         if max(Q[Q.s == s].q) > 0:
             max_q = max(Q[Q.s == s].q)
-            a = random.choice(Q.loc[(Q.s == s) & (Q.q == max_q), :].a)
+            a = random.choice(Q.loc[(Q.s == s) & (Q.q == max_q), :].reset_index().a)
             # TODO régler le probleme sur la ligne ci-dessous -> on tente
-            # TODO sélectionner les ligne avec loc
+            # TODO sélectionner les lignes avec loc
             # File "pandas\_libs\index.pyx", line 177, in pandas._libs.index.IndexEngine._get_loc_duplicates
             # KeyError: 1
         else:
