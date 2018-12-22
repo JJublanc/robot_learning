@@ -125,7 +125,7 @@ def action_choisie(epsilon, s, Q):
     :param Q: connaissance sur l'environnement
     :return: action choisie
     """
-    rand = np.random.choice((0, 1), p=[(1 - epsilon), epsilon])
+    rand = np.random.choice((0, 1), p=[epsilon, (1 - epsilon)])
     # si l'état est connu et qu'on est dans une configuration greedy on choisi
     # l'action maximisant l'espérance de gain
     # sinon on effectue un mouvement au hasard

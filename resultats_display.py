@@ -15,6 +15,19 @@ def recuperation_resultats_enregistres():
     return ensemble_des_resultats
 
 
+def recuperation_resultat_par_nom(noms_fichiers):
+    """
+    :return: ensemble des résultat enregistrés dans le dossier resultats, sous forme de liste
+    """
+    liste_des_resultats = list()
+    for fichier in noms_fichiers:
+        path_fichier_a_ouvrir = 'resultats\\{}'.format(fichier)
+        with open(path_fichier_a_ouvrir, 'rb') as fichier_lu:
+            mes_resultats = pickle.load(fichier_lu)
+            liste_des_resultats.append(mes_resultats)
+    return liste_des_resultats
+
+
 def afficher_graph(liste_numeros_resultats=[2, 3]):
     """
     :param liste_numeros_resultats: liste de numéro de fichier que l'on souhaite afficher
@@ -72,45 +85,52 @@ afficher_graph()
 ## graphique principal ##
 #########################
 import matplotlib.pyplot as plt
-
+import matplotlib.ticker as plticker
 
 # renvoie la légende du graphique
 def create_legende(resultats):
     res_series = pd.Series(resultats['nombre_mvt'])
     nb_iter = resultats['nb_iter']
-    moyenne_derniers_coups = round(res_series[(nb_iter - 50):nb_iter].mean())
-    moyenne_premiers_coups = round(res_series[1:10].mean())
+    moyenne_derniers_coups = round(res_series[(nb_iter - 10): nb_iter].mean())
+    moyenne_premiers_coups = round(res_series[0:10].mean())
     legende = "alpha = {0} - epsilon = {1} - nb_iter = {2}\n" \
-              "Nombre de mouvements moyen sur les 50 derniers essais : {3}\n" \
-              "Nombre de mouvements moyen sur les 10 premiers essais : {4}".format(resultats['alpha'],
-                                                                             resultats['epsilon'],
-                                                                             nb_iter,
-                                                                             moyenne_derniers_coups,
-                                                                             moyenne_premiers_coups)
+              "Nb de mvts moyen 10 derniers essais : {3}\n" \
+              "Nb de mvts moyen 10 premiers essais : {4}".format(resultats['alpha'],
+                                                                                   resultats['epsilon'],
+                                                                                   nb_iter,
+                                                                                   moyenne_derniers_coups,
+                                                                                   moyenne_premiers_coups)
     return legende
 
 
-# récupération de l'ensemble des résultats
-ensemble_des_resultats = recuperation_resultats_enregistres()
+# récupération des résultats
+resultats_affiches = recuperation_resultat_par_nom(["resultats_7", "resultats_8"])
 
 # création du graphique subplots
 fig, axes = plt.subplots(1, 2)
 
-res_1 = ensemble_des_resultats[13]
-res_2 = ensemble_des_resultats[11]
+res_1 = resultats_affiches[0]
+res_2 = resultats_affiches[1]
 df1 = pd.Series(res_1['nombre_mvt'])
 df2 = pd.Series(res_2['nombre_mvt'])
-
-df2[250:300].mean()
+y_max = max(df1.max(), df2.max())
+x_max = max(len(df1), len(df2))
+loc = plticker.MultipleLocator(base=15)
 
 ax_1 = df1.plot(ax=axes[0], label=create_legende(res_1), color="#ff1a1a")
 ax_1.legend(loc="upper right", prop={'size': 12})
 ax_1.set_xlabel("numéro de l'essai", fontSize=18)
 ax_1.set_ylabel("nombre de mouvements par essai", fontSize=18)
+ax_1.set_ylim([0, y_max])
+ax_1.set_xlim([0, x_max])
+ax_1.xaxis.set_major_locator(loc)
 
 ax_2 = df2.plot(ax=axes[1], label=create_legende(res_2), color="#0052cc")
 ax_2.legend(loc="upper right", prop={'size': 12})
 ax_2.set_xlabel("numéro de l'essai", fontSize=18)
+ax_2.set_ylim([0, y_max])
+ax_2.set_xlim([0, x_max])
+ax_2.xaxis.set_major_locator(loc)
 
 if res_1['type_algo'] == res_2['type_algo']:
     fig.suptitle("Résultats d'un entrainement de \"robot\" avec un algorithme de type {}".format(res_1['type_algo']),
